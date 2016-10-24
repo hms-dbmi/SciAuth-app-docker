@@ -7,11 +7,12 @@ WORKDIR /sciauth-app/
 RUN  echo "abcdefgh" && git clone -b development https://github.com/hms-dbmi/SciAuth.git 
 RUN pip install -r /sciauth-app/SciAuth/requirements.txt
 
-COPY gunicorn-nginx-entry.sh /
-RUN chmod u+x /gunicorn-nginx-entry.sh
+RUN mkdir /entry_scripts/
+COPY gunicorn-nginx-entry.sh /entry_scripts/
+RUN chmod u+x /entry_scripts/gunicorn-nginx-entry.sh
 
 COPY sciauth.conf /etc/nginx/sites-available/pynxgu.conf
 
 WORKDIR /
 
-ENTRYPOINT ["./gunicorn-nginx-entry.sh"]
+ENTRYPOINT ["/entry_scripts/gunicorn-nginx-entry.sh"]

@@ -18,11 +18,11 @@ export AUTH0_CALLBACK_URL=$AUTH0_CALLBACK_URL_VAULT
 export AUTH0_SUCCESS_URL=$AUTH0_SUCCESS_URL_VAULT
 export AUTH0_LOGOUT_URL=$AUTH0_LOGOUT_URL_VAULT
 
-cd /hypatio-app/hypatio-app/
+cd /sciauth-app/SciAuth/
 
 python manage.py migrate
 python manage.py collectstatic --no-input
 
 /etc/init.d/nginx restart
 
-gunicorn hypatio.wsgi:application
+gunicorn SciAuth.wsgi:application -b 0.0.0.0:8002

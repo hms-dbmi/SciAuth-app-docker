@@ -10,6 +10,11 @@ AUTH0_CALLBACK_URL_VAULT=$(/vault/vault read -field=value $VAULT_PATH/auth0_call
 AUTH0_SUCCESS_URL_VAULT=$(/vault/vault read -field=value $VAULT_PATH/auth0_success_url)
 AUTH0_LOGOUT_URL_VAULT=$(/vault/vault read -field=value $VAULT_PATH/auth0_logout_url)
 
+MYSQL_USERNAME_VAULT=$(/vault/vault read -field=value $VAULT_PATH/mysql_username)
+MYSQL_PASSWORD_VAULT=$(/vault/vault read -field=value $VAULT_PATH/mysql_pw)
+MYSQL_HOST_VAULT=$(/vault/vault read -field=value $DB_VAULT_PATH/mysql_host)
+MYSQL_PORT_VAULT=$(/vault/vault read -field=value $VAULT_PATH/mysql_port)
+
 export SECRET_KEY=$DJANGO_SECRET
 export AUTH0_DOMAIN=$AUTH0_DOMAIN_VAULT
 export AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID_VAULT
@@ -18,7 +23,12 @@ export AUTH0_CALLBACK_URL=$AUTH0_CALLBACK_URL_VAULT
 export AUTH0_SUCCESS_URL=$AUTH0_SUCCESS_URL_VAULT
 export AUTH0_LOGOUT_URL=$AUTH0_LOGOUT_URL_VAULT
 
-cd /sciauth-app/SciAuth/
+export MYSQL_USERNAME=$MYSQL_USERNAME_VAULT
+export MYSQL_PASSWORD=$MYSQL_PASSWORD_VAULT
+export MYSQL_HOST=$MYSQL_HOST_VAULT
+export MYSQL_PORT=$MYSQL_PORT_VAULT
+
+cd /SciAuth/
 
 python manage.py migrate
 python manage.py collectstatic --no-input

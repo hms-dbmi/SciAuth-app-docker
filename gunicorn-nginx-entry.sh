@@ -9,6 +9,7 @@ AUTH0_SECRET_VAULT=$(/vault/vault read -field=value $VAULT_PATH/auth0_secret)
 AUTH0_CALLBACK_URL_VAULT=$(/vault/vault read -field=value $VAULT_PATH/auth0_callback_url)
 AUTH0_SUCCESS_URL_VAULT=$(/vault/vault read -field=value $VAULT_PATH/auth0_success_url)
 AUTH0_LOGOUT_URL_VAULT=$(/vault/vault read -field=value $VAULT_PATH/auth0_logout_url)
+COOKIE_DOMAIN_VAULT=$(/vault/vault read -field=value $VAULT_PATH/cookie_domain)
 
 MYSQL_USERNAME_VAULT=$(/vault/vault read -field=value $VAULT_PATH/mysql_username)
 MYSQL_PASSWORD_VAULT=$(/vault/vault read -field=value $VAULT_PATH/mysql_pw)
@@ -22,6 +23,7 @@ export AUTH0_SECRET=$AUTH0_SECRET_VAULT
 export AUTH0_CALLBACK_URL=$AUTH0_CALLBACK_URL_VAULT
 export AUTH0_SUCCESS_URL=$AUTH0_SUCCESS_URL_VAULT
 export AUTH0_LOGOUT_URL=$AUTH0_LOGOUT_URL_VAULT
+export COOKIE_DOMAIN=$COOKIE_DOMAIN_VAULT
 
 export MYSQL_USERNAME=$MYSQL_USERNAME_VAULT
 export MYSQL_PASSWORD=$MYSQL_PASSWORD_VAULT
@@ -37,6 +39,10 @@ echo $SSL_CERT_CHAIN | base64 -d >> /etc/nginx/ssl/server.crt
 cd /SciAuth/
 
 python manage.py migrate
+
+if [ ! -d static ]; then
+  mkdir static
+fi
 python manage.py collectstatic --no-input
 
 /etc/init.d/nginx restart
